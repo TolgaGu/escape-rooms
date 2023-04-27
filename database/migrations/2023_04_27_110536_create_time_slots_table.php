@@ -13,14 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('time_slots', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->date("date_of_birth");
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
+            $table->dateTime('start_time');
+            $table->double('price');
+            $table->integer('free_seats_number');
+            $table->boolean('is_available')->default(true);
+            $table->foreignId('escape_rooms_id')
+                ->constrained()
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -32,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('time_slots');
     }
 };
