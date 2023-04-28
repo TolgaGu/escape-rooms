@@ -15,6 +15,7 @@ touch database/database.sqlite
 ## update DB_DATABASE in .env file with the absolute path for database.sqlite
 ex : DB_DATABASE=var/www/html/escape-room/database/database.sqlite
 
+## launch project 
 php artisan migrate:fresh
 ## 
 php artisan db:seed
