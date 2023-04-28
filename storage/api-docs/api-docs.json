@@ -1,0 +1,166 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Laravel-Api-EscapeRooms",
+        "description": "Booking service for escape rooms",
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "0.0.1"
+    },
+    "paths": {
+        "/login": {
+            "post": {
+                "tags": [
+                    "Login"
+                ],
+                "summary": "Login service",
+                "description": "Authentication with credential to have JWT token",
+                "operationId": "login",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "test@test.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "mysecurepassword"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "403": {
+                        "description": "Unauthorised"
+                    }
+                }
+            }
+        },
+        "/bookings": {
+            "post": {
+                "tags": [
+                    "Bookings"
+                ],
+                "summary": "Add a new booking",
+                "description": "Add a new booking if all conditions are respected",
+                "operationId": "addBooking",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "time_slots_id"
+                                ],
+                                "properties": {
+                                    "time_slots_id": {
+                                        "type": "integer",
+                                        "example": "23"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                }
+            }
+        },
+        "/bookings/{id}": {
+            "delete": {
+                "tags": [
+                    "Bookings"
+                ],
+                "summary": "Change bookings status",
+                "description": "Set booking status to false",
+                "operationId": "deleteBooking",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                }
+            }
+        },
+        "/escape-rooms": {
+            "get": {
+                "tags": [
+                    "EscapeRooms"
+                ],
+                "summary": "Get available escape rooms",
+                "description": "Show all available escape rooms",
+                "operationId": "getEscapeRooms",
+                "responses": {
+                    "202": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                }
+            }
+        },
+        "/escape-rooms/{id}": {
+            "get": {
+                "tags": [
+                    "EscapeRooms"
+                ],
+                "summary": "Get specified escape room",
+                "description": "Show specified escape room details",
+                "operationId": "getEscapeRoomsDetails",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                }
+            }
+        },
+        "/escape-rooms/{id}/time-slots": {
+            "get": {
+                "tags": [
+                    "EscapeRoomsTimeSlots"
+                ],
+                "summary": "Get specified escape rooms time slots",
+                "description": "Show all time slots of specified escape room",
+                "operationId": "getEscapeRoomsTimeSlots",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                }
+            }
+        }
+    }
+}

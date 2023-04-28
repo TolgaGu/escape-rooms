@@ -9,6 +9,17 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * @OA\Info(
+ *      title="Laravel-Api-EscapeRooms",
+ *      version="0.0.1",
+ *      description="Booking service for escape rooms",
+ *      @OA\License(
+ *          name="Apache 2.0",
+ *          url="http://www.apache.org/licenses/LICENSE-2.0.html"
+ *      )
+ * )
+ */
 class BookingsController extends Controller
 {
     /**
@@ -33,10 +44,27 @@ class BookingsController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @OA\Post(
+     *     path="/bookings",
+     *     operationId="addBooking",
+     *     tags={"Bookings"},
+     *     summary="Add a new booking",
+     *     description="Add a new booking if all conditions are respected",
+     *     @OA\RequestBody(
+     *         @OA\JsonContent(
+     *             required={"time_slots_id"},
+     *             @OA\Property(property="time_slots_id", type="integer", example="23")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Bad request"
+     *     )
+     * )
      */
     public function store(Request $request)
     {
@@ -106,12 +134,13 @@ class BookingsController extends Controller
 
             //response in case of error
             return response()->json(
-                $this->responseFormat(false, $e->getMessage()), 400
+                $this->responseFormat(false, $e->getMessage()),
+                400
             );
         }
 
         return response()->json(
-            $this->responseFormat(true, 'Booking added succesfully',201)
+            $this->responseFormat(true, 'Booking added succesfully', 201)
         );
     }
 
@@ -150,11 +179,23 @@ class BookingsController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @OA\Delete(
+     *     path="/bookings/{id}",
+     *     operationId="deleteBooking",
+     *     tags={"Bookings"},
+     *     summary="Change bookings status",
+     *     description="Set booking status to false",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Bad request"
+     *     )
+     * )
      */
+
     public function destroy($id)
     {
         if (auth()->check()) {
@@ -167,15 +208,15 @@ class BookingsController extends Controller
                 ->first();
 
             if (!$booking) {
-                return response()->json($this->responseFormat(false,'User has no booking with specified time slot id'));
+                return response()->json($this->responseFormat(false, 'User has no booking with specified time slot id'));
             }
 
 
             //add one free seat number on time slot if it is always available
             $timeSlot = TimeSlots::where('id', $booking->time_slots_id)
-                    ->where('free_seats_number', '>', 0)
-                    ->where('is_available', true)
-                    ->lockForUpdate()->first();
+                ->where('free_seats_number', '>', 0)
+                ->where('is_available', true)
+                ->lockForUpdate()->first();
 
             // Update free seats number
             $timeSlot->free_seats_number += 1;
@@ -184,7 +225,7 @@ class BookingsController extends Controller
             $booking->status = false;
             $booking->save();
 
-            return response()->json($this->responseFormat(true,'Booking canceled succesfully'));
+            return response()->json($this->responseFormat(true, 'Booking canceled succesfully'));
         } else {
             // utilisateur non authentifié
             return response()->json('Invalide request : user is not authenticated', 400);

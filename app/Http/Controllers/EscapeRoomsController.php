@@ -8,14 +8,25 @@ use Illuminate\Http\Request;
 class EscapeRoomsController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @OA\Get(
+     *     path="/escape-rooms",
+     *     operationId="getEscapeRooms",
+     *     tags={"EscapeRooms"},
+     *     summary="Get available escape rooms",
+     *     description="Show all available escape rooms",
+     *     @OA\Response(
+     *         response=202,
+     *         description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Bad request"
+     *     )
+     * )
      */
     public function index()
     {
-        return response()->json(EscapeRooms::where('is_available',1)->get());
-
+        return response()->json(EscapeRooms::where('is_available', 1)->get());
     }
 
     /**
@@ -39,26 +50,48 @@ class EscapeRoomsController extends Controller
         //
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     /**
+     * @OA\Get(
+     *     path="/escape-rooms/{id}",
+     *     operationId="getEscapeRoomsDetails",
+     *     tags={"EscapeRooms"},
+     *     summary="Get specified escape room",
+     *     description="Show specified escape room details",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Bad request"
+     *     )
+     * )
      */
     public function show($id)
     {
-        return response()->json(EscapeRooms::where('id',$id)->first());
+        return response()->json(EscapeRooms::where('id', $id)->first());
     }
 
     /**
-     * 
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @OA\Get(
+     *     path="/escape-rooms/{id}/time-slots",
+     *     operationId="getEscapeRoomsTimeSlots",
+     *     tags={"EscapeRoomsTimeSlots"},
+     *     summary="Get specified escape rooms time slots",
+     *     description="Show all time slots of specified escape room",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Bad request"
+     *     )
+     * )
      */
     public function timeSlots($id)
     {
-        return response()->json(EscapeRooms::with('timsSlots')->where('id',$id)->first());
-        
+        return response()->json(EscapeRooms::with('timsSlots')->where('id', $id)->first());
     }
 
     /**

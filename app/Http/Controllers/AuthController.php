@@ -8,10 +8,34 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
+    
     /**
-     * Login api
-     *
-     * @return \Illuminate\Http\Response
+     * @OA\Post(
+     *     path="/login",
+     *     operationId="login",
+     *     tags={"Login"},
+     *     summary="Login service",
+     *     description="Authentication with credential to have JWT token",
+     *     @OA\RequestBody(
+     *         @OA\JsonContent(
+     *             required={"email", "password"},
+     *             @OA\Property(property="email", type="string", example="test@test.com"),
+     *             @OA\Property(property="password", type="string", example="mysecurepassword")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation"
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Bad request"
+     *     ),
+     *     @OA\Response(
+     *         response=403,
+     *         description="Unauthorised"
+     *     )
+     * )
      */
     public function login(Request $request)
     {

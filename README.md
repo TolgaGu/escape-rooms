@@ -28,3 +28,6 @@ password : mysecurepassword
 
 ## POSTMAN
 Add to postman "EscapeRooms.postman_collection" file present in root directory to execute api requests with tests
+
+## SWAGGER
+http://localhost:8000/api/documentation
