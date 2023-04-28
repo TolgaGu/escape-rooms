@@ -19,6 +19,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('/login', 'App\Http\Controllers\AuthController@login');
+Route::get('/unauthorized', 'App\Http\Controllers\AuthController@unauthorized')->name('unauthorized');
+
+
 
 
 Route::middleware('auth:sanctum')->group(function () {

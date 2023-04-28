@@ -29,10 +29,19 @@ class AuthController extends Controller
             $success['token'] =  $user->createToken('EscapeRooms')->plainTextToken; 
             $success['name'] =  $user->name;
    
-            return response()->json($success);
+            return response()->json($success,201);
         } 
         else{ 
             return response()->json(['Unauthorised.', ['error'=>'Invalide Credentials']], 403);
         } 
     }
+
+    public function unauthorized()
+    {
+        return response()->json([
+            "error"=> "Unauthorized",
+            "message"=> "You must be authenticated to access this resource"
+        ],401);
+    }
+
 }

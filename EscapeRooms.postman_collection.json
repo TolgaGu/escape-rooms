@@ -1,0 +1,765 @@
+{
+	"info": {
+		"_postman_id": "872e58f9-35c0-4a78-98f7-b9cca71dfc5c",
+		"name": "EscapeRooms",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4707296"
+	},
+	"item": [
+		{
+			"name": "escape-rooms - unauthorized",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 401\", function () {",
+							"    pm.response.to.have.status(401);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/escape-rooms",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"escape-rooms"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "escape-rooms - unauthorized Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 401\", function () {",
+							"    pm.response.to.have.status(401);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer 1|xk2QE6kVgPzaNNy1ypccWy4IbTrxuuc5U99jFh32d",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/escape-rooms",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"escape-rooms"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([201, 202]);",
+							"});",
+							"",
+							"pm.collectionVariables.set(\"Bearer\", \"Bearer \" + pm.response.json().token);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "test@test.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "mysecurepassword",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/login",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{Bearer}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/user",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "escape-rooms",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"The body of the response is an array\", function () {",
+							"    pm.expect(pm.response.json()).to.be.an('array');",
+							"});",
+							"",
+							"pm.test(\"Each array element has the expected properties\", function () {",
+							"    var schema = {",
+							"        \"type\": \"object\",",
+							"        \"required\": [\"id\", \"theme\", \"max_size\", \"is_available\", \"created_at\", \"updated_at\"],",
+							"        \"properties\": {",
+							"            \"id\": { \"type\": \"number\" },",
+							"            \"theme\": { \"type\": \"string\" },",
+							"            \"max_size\": { \"type\": \"number\" },",
+							"            \"is_available\": { \"type\": \"number\" },",
+							"            \"created_at\": { \"type\": \"string\", \"format\": \"date-time\" },",
+							"            \"updated_at\": { \"type\": \"string\", \"format\": \"date-time\" }",
+							"        }",
+							"    };",
+							"    pm.response.json().forEach(function (item) {",
+							"        pm.expect(item).to.have.jsonSchema(schema);",
+							"    });",
+							"});",
+							"",
+							"pm.test(\"Each array element has a unique id property\", function () {",
+							"    var ids = [];",
+							"    pm.response.json().forEach(function (item) {",
+							"        pm.expect(ids).to.not.include(item.id);",
+							"        ids.push(item.id);",
+							"    });",
+							"});",
+							"",
+							"pm.test(\"At least one array element has an is_available value of 1\", function () {",
+							"    var available = false;",
+							"    pm.response.json().forEach(function (item) {",
+							"        if (item.is_available === 1) {",
+							"            available = true;",
+							"        }",
+							"    });",
+							"    pm.expect(available).to.be.true;",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{Bearer}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/escape-rooms",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"escape-rooms"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "escape-rooms/{id}",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Body is an object\", function () {",
+							"    pm.expect(typeof pm.response.json() === 'object').to.be.true;",
+							"});",
+							"",
+							"pm.test(\"Body has the correct properties\", function () {",
+							"    pm.expect(pm.response.json()).to.have.all.keys('id', 'theme', 'max_size', 'is_available', 'created_at', 'updated_at');",
+							"});",
+							"",
+							"pm.test(\"Property 'id' is an integer\", function () {",
+							"    pm.expect(pm.response.json().id).to.be.an('number');",
+							"});",
+							"",
+							"pm.test(\"Property 'theme' is a string\", function () {",
+							"    pm.expect(pm.response.json().theme).to.be.a('string');",
+							"});",
+							"",
+							"pm.test(\"Property 'max_size' is an integer\", function () {",
+							"    pm.expect(pm.response.json().max_size).to.be.an('number');",
+							"});",
+							"",
+							"pm.test(\"Property 'is_available' is a boolean\", function () {",
+							"    pm.expect(pm.response.json().is_available).to.be.a('number');",
+							"});",
+							"",
+							"pm.test(\"Property 'created_at' is a date\", function () {",
+							"    pm.expect(pm.response.json().created_at).to.match(/\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{6}Z/);",
+							"});",
+							"",
+							"pm.test(\"Property 'updated_at' is a date\", function () {",
+							"    pm.expect(pm.response.json().updated_at).to.match(/\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{6}Z/);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{Bearer}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/escape-rooms/1",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"escape-rooms",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "escape-rooms/{id}/time-slots",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test if the response body is an object",
+							"pm.test(\"Response body should be an object\", function () {",
+							"    pm.response.to.be.an('object');",
+							"});",
+							"",
+							"// Test if the response body contains the 'id' property",
+							"pm.test(\"Response body should contain the 'id' property\", function () {",
+							"    pm.expect(pm.response.json()).to.have.property('id');",
+							"});",
+							"",
+							"// Test if the response body contains the 'theme' property",
+							"pm.test(\"Response body should contain the 'theme' property\", function () {",
+							"    pm.expect(pm.response.json()).to.have.property('theme');",
+							"});",
+							"",
+							"// Test if the response body contains the 'max_size' property",
+							"pm.test(\"Response body should contain the 'max_size' property\", function () {",
+							"    pm.expect(pm.response.json()).to.have.property('max_size');",
+							"});",
+							"",
+							"// Test if the response body contains the 'is_available' property",
+							"pm.test(\"Response body should contain the 'is_available' property\", function () {",
+							"    pm.expect(pm.response.json()).to.have.property('is_available');",
+							"});",
+							"",
+							"// Test if the response body contains the 'created_at' property",
+							"pm.test(\"Response body should contain the 'created_at' property\", function () {",
+							"    pm.expect(pm.response.json()).to.have.property('created_at');",
+							"});",
+							"",
+							"// Test if the response body contains the 'updated_at' property",
+							"pm.test(\"Response body should contain the 'updated_at' property\", function () {",
+							"    pm.expect(pm.response.json()).to.have.property('updated_at');",
+							"});",
+							"",
+							"// Test if the response body contains the 'tims_slots' property",
+							"pm.test(\"Response body should contain the 'tims_slots' property\", function () {",
+							"    pm.expect(pm.response.json()).to.have.property('tims_slots');",
+							"});",
+							"",
+							"// Test if the 'tims_slots' property is an array",
+							"pm.test(\"'tims_slots' property should be an array\", function () {",
+							"    pm.expect(pm.response.json().tims_slots).to.be.an('array');",
+							"});",
+							"",
+							"// Test if the 'tims_slots' property contains at least one element",
+							"pm.test(\"'tims_slots' property should contain at least one element\", function () {",
+							"    pm.expect(pm.response.json().tims_slots).to.have.length.above(0);",
+							"});",
+							"",
+							"// Test if each element of the 'tims_slots' array has the required properties",
+							"pm.test(\"Each element of the 'tims_slots' array should have the required properties\", function () {",
+							"    var requiredProperties = ['id', 'start_time', 'price', 'free_seats_number', 'is_available', 'escape_rooms_id', 'created_at', 'updated_at'];",
+							"    pm.response.json().tims_slots.forEach(function (timeslot) {",
+							"        requiredProperties.forEach(function (property) {",
+							"            pm.expect(timeslot).to.have.property(property);",
+							"        });",
+							"    });",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{Bearer}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/escape-rooms/1/time-slots",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"escape-rooms",
+						"1",
+						"time-slots"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "bookings",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{Bearer}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"time_slots_id\" : 3\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/bookings",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"bookings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "bookings",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							"// Test if the response body contains at least one element",
+							"pm.test(\"Response body should contain at least one element\", function () {",
+							"    pm.expect(pm.response.json()).to.have.length.above(0);",
+							"});",
+							"",
+							"// Test if each element of the array has the required properties",
+							"pm.test(\"Each element of the array should have the required properties\", function () {",
+							"    var requiredProperties = ['id', 'price', 'information', 'status', 'users_id', 'time_slots_id', 'created_at', 'updated_at'];",
+							"    pm.response.json().forEach(function (booking) {",
+							"        requiredProperties.forEach(function (property) {",
+							"            pm.expect(booking).to.have.property(property);",
+							"        });",
+							"    });",
+							"});",
+							"",
+							"// Test if the 'status' property has a valid value for each element of the array",
+							"pm.test(\"'status' property should have a valid value for each element of the array\", function () {",
+							"    var validStatusValues = [0, 1];",
+							"    pm.response.json().forEach(function (booking) {",
+							"        pm.expect(validStatusValues).to.include(booking.status);",
+							"    });",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{Bearer}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/bookings",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"bookings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "bookings fail",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{Bearer}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"time_slots_id\" : 3\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/bookings",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"bookings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "bookings",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{Bearer}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"time_slots_id\" : \"1\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/bookings/28",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"bookings",
+						"28"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "bookings - re-delete",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{Bearer}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"time_slots_id\" : \"1\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/bookings/28",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"bookings",
+						"28"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "Bearer",
+			"value": "Bearer 5|xi65BbkiPWHXrbqQJi39NwQ0sMbP1Ozs3pcEULVP"
+		}
+	]
+}

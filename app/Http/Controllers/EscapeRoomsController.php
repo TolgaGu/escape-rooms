@@ -57,7 +57,7 @@ class EscapeRoomsController extends Controller
      */
     public function timeSlots($id)
     {
-        return response()->json(EscapeRooms::with('timsSlots')->where('id',$id)->get());
+        return response()->json(EscapeRooms::with('timsSlots')->where('id',$id)->first());
         
     }
 

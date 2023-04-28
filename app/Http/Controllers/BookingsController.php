@@ -106,12 +106,12 @@ class BookingsController extends Controller
 
             //response in case of error
             return response()->json(
-                $this->responseFormat(false, $e->getMessage(), 500)
+                $this->responseFormat(false, $e->getMessage()), 400
             );
         }
 
         return response()->json(
-            $this->responseFormat(true, 'Booking added succesfully')
+            $this->responseFormat(true, 'Booking added succesfully',201)
         );
     }
 
@@ -169,6 +169,17 @@ class BookingsController extends Controller
             if (!$booking) {
                 return response()->json($this->responseFormat(false,'User has no booking with specified time slot id'));
             }
+
+
+            //add one free seat number on time slot if it is always available
+            $timeSlot = TimeSlots::where('id', $booking->time_slots_id)
+                    ->where('free_seats_number', '>', 0)
+                    ->where('is_available', true)
+                    ->lockForUpdate()->first();
+
+            // Update free seats number
+            $timeSlot->free_seats_number += 1;
+            $timeSlot->save();
 
             $booking->status = false;
             $booking->save();
