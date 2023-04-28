@@ -16,7 +16,9 @@ touch database/database.sqlite
 ex : DB_DATABASE=var/www/html/escape-room/database/database.sqlite
 
 php artisan migrate:fresh
+## 
 php artisan db:seed
+## 
 php artisan serve  
 
 ## Test user
