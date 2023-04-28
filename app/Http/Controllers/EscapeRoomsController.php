@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\EscapeRooms;
 use Illuminate\Http\Request;
 
 class EscapeRoomsController extends Controller
@@ -13,7 +14,7 @@ class EscapeRoomsController extends Controller
      */
     public function index()
     {
-        return response()->json(['message' => 'omaya mou shindeiru']);
+        return response()->json(EscapeRooms::where('is_available',1)->get());
 
     }
 
@@ -46,7 +47,18 @@ class EscapeRoomsController extends Controller
      */
     public function show($id)
     {
-        //
+        return response()->json(EscapeRooms::where('id',$id)->first());
+    }
+
+    /**
+     * 
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function timeSlots($id)
+    {
+        return response()->json(EscapeRooms::with('timsSlots')->where('id',$id)->get());
+        
     }
 
     /**

@@ -10,5 +10,10 @@ class TimeSlots extends Model
     use HasFactory;
 
     protected $fillable = ['price', 'start_time', 'is_available', 'free_seats_number'];
+    
+    public function escapeRooms()
+    {
+        return $this->belongsTo(EscapeRoom::class,'escape_rooms_id');
+    }
 
 }

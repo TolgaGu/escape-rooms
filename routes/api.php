@@ -20,10 +20,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/login', 'App\Http\Controllers\AuthController@login');
 
-Route::get('/escape-rooms', 'App\Http\Controllers\EscapeRoomsController@index');
-Route::get('/escape-rooms/{id}', 'App\Http\Controllers\EscapeRoomsController@index');
-Route::get('/escape-rooms/{id}/time-slots', 'App\Http\Controllers\EscapeRoomsController@index');
 
-Route::post('/bookings', 'App\Http\Controllers\BookingsController@index');
-Route::get('/bookings', 'App\Http\Controllers\BookingsController@index');
-Route::delete('/bookings/{id}', 'App\Http\Controllers\BookingsController@index');
+Route::middleware('auth:sanctum')->group(function () {
+
+    Route::get('/escape-rooms', 'App\Http\Controllers\EscapeRoomsController@index');
+    Route::get('/escape-rooms/{id}', 'App\Http\Controllers\EscapeRoomsController@show');
+    Route::get('/escape-rooms/{id}/time-slots', 'App\Http\Controllers\EscapeRoomsController@timeSlots');
+    
+    Route::get('/bookings', 'App\Http\Controllers\BookingsController@index');
+    Route::post('/bookings', 'App\Http\Controllers\BookingsController@store');
+    Route::delete('/bookings/{id}', 'App\Http\Controllers\BookingsController@destroy');
+
+});

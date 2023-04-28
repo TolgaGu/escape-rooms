@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->double('price');
             $table->string('information')->default('');
-            $table->integer('status');
+            $table->integer('status')->default(true);
 
             $table->foreignId('users_id')
                 ->constrained()
